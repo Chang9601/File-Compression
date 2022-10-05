@@ -1,16 +1,16 @@
 CC=gcc
-CFLAGS=-g -Wall -Wshadow -Werror -Wvla -pedantic
+CFLAGS=-g -Wall -Wshadow -Wvla -pedantic
 DEBUG=gdb
-EXECUTABLE=pq
-MAIN_C=priority_queue_main.c
-SRC_C=priority_queue.c
-SRC_H=priority_queue.h
+EXECUTABLE=huff
+MAIN_C=huffman_main.c
+SRC_C=huffman.c frequency.c priority_queue.c
+SRC_H=huffman.h frequency.h priority_queue.h
 
 $(EXECUTABLE):$(MAIN_C) $(SRC_C) $(SRC_H) 
-	$(CC) -o pq $(CFLAGS) priority_queue.c priority_queue_main.c
+	$(CC) -o huff $(CFLAGS) huffman.c frequency.c priority_queue.c huffman_main.c
 
 debug:
-	$(DEBUG) pq
+	$(DEBUG) huff
 
 clean:
 	rm .\$(EXECUTABLE)
