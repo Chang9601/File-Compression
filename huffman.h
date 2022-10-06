@@ -13,5 +13,7 @@ typedef struct _HuffTreeNode {
 } HuffTreeNode;
 
 Node *makeHuffmanPq(uint64_t freqs[256]);
+HuffTreeNode *makeHuffmanTree(Node *pq);
+void destroyHuffmanTree(HuffTreeNode **root);
 
 #endif
