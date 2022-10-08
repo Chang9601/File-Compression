@@ -5,7 +5,7 @@
 #include <assert.h>
 #include "huffman.h"
 
-static int _cmpFrequencies(const void *argLhs, const void *argRhs);
+static int _cmpHuffmanTrees(const void *argLhs, const void *argRhs);
 
 // Create a priority queue for Huffman tree.
 Node *makeHuffmanPq(uint64_t freqs[256])
@@ -19,7 +19,7 @@ Node *makeHuffmanPq(uint64_t freqs[256])
 			huffTreeNode -> freq = freqs[ch];
 			huffTreeNode -> left = huffTreeNode -> right = NULL;	
 
-			enqueue(&head, huffTreeNode, _cmpFrequencies);
+			enqueue(&head, huffTreeNode, _cmpHuffmanTrees);
 		}	
 
 		if (ch == 255)
@@ -52,7 +52,7 @@ HuffTreeNode *makeHuffmanTree(Node *pq)
 		huffTreeNode -> right = secondHuffTreeNode;
 
 		// Put the newly created huffman tree node into the priority queue.
-		enqueue(&pq, huffTreeNode, _cmpFrequencies);
+		enqueue(&pq, huffTreeNode, _cmpHuffmanTrees);
 
 		// Deallocate memory nodes of the priority queue.
 		free(firstNode);
@@ -78,7 +78,7 @@ void destroyHuffmanTree(HuffTreeNode **root)
 	*root = NULL;
 }
 
-static int _cmpFrequencies(const void *argLhs, const void *argRhs) 
+static int _cmpHuffmanTrees(const void *argLhs, const void *argRhs) 
 {
 	const HuffTreeNode *huffTreeNodeLhs = (HuffTreeNode*)argLhs;
 	const HuffTreeNode *huffTreeNodeRhs = (HuffTreeNode*)argRhs;
