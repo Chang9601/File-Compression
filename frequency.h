@@ -5,6 +5,6 @@
 #include <stdint.h>
 
 typedef unsigned char uchar;
-bool calcFrequencies(uint64_t freqs[256], const char *path, const char **error);
+bool calcFrequencies(uint64_t freq[256], const char *path, const char **error);
 
 #endif

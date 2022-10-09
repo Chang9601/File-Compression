@@ -5,7 +5,7 @@
 #include "frequency.h"
 
 // Calculate frequency of characters in the open file.
-bool calcFrequencies(uint64_t freqs[256], const char *path, const char **error)
+bool calcFrequencies(uint64_t freq[256], const char *path, const char **error)
 {
 	FILE *fp;
 
@@ -15,7 +15,7 @@ bool calcFrequencies(uint64_t freqs[256], const char *path, const char **error)
 	}
 	
 	for (uchar ch = getc(fp); !feof(fp); ch = getc(fp))
-		freqs[ch]++;
+		freq[ch]++;
 
 	fclose(fp);
 	return true;	
