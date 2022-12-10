@@ -8,7 +8,7 @@
 static int _cmpHuffmanTrees(const void *argLhs, const void *argRhs);
 static void _makeEncodingTable(HuffTreeNode *root, EncodedCharacter *encodedCh, uchar ch, size_t len);
 
-// Create a priority queue for a Huffman tree.
+/* 허프만 트리를 위한 우선순위 큐 생성 */
 Node *makeHuffmanPq(uint64_t freqs[256])
 {
 	Node *head = NULL;
@@ -30,44 +30,44 @@ Node *makeHuffmanPq(uint64_t freqs[256])
 	return head;
 }
 
-// Create a Huffman tree from priority queue.
+/* 우선순위 큐로부터 허프만 트리 생성 */
 HuffTreeNode *makeHuffmanTree(Node *pq)
 {
 	if (pq == NULL)
 		return NULL;
 	
 	while (pq -> next != NULL) {
-		// Remove the first two nodes from priority queue.
+		/* 우선순위 큐에서 처음 2개의 노드 제거 */
 		Node *firstNode = dequeue(&pq);
 		Node *secondNode = dequeue(&pq);
 
-		// Extract Huffman tree nodes.
+		/* 허프만 트리 노드 추출 */
 		HuffTreeNode *firstHuffTreeNode = (HuffTreeNode*) (firstNode -> value);
 		HuffTreeNode *secondHuffTreeNode = (HuffTreeNode*) (secondNode -> value);
 
-		// Combine two Huffman tree nodes into a new one.
+		/* 두 개의 허프만 트리 노드를 합쳐서 새로운 허프만 트리 노드 생성 */
 		HuffTreeNode *huffTreeNode = calloc(1, sizeof(*huffTreeNode));
 		huffTreeNode -> ch = '\0';
 		huffTreeNode -> freq = firstHuffTreeNode -> freq + secondHuffTreeNode -> freq;
 		huffTreeNode -> left = firstHuffTreeNode;
 		huffTreeNode -> right = secondHuffTreeNode;
 
-		// Put the newly created Huffman tree node into the priority queue.
+		/* 새로 생성된 허프만 트리 노드를 우선순위 큐에 삽입 */
 		enqueue(&pq, huffTreeNode, _cmpHuffmanTrees);
 
-		// Deallocate memory nodes of the priority queue.
+		/* 우선순위 큐의 메모리 노드 해제 */
 		free(firstNode);
 		free(secondNode);
 	}
 
-	// Extract a completed Huffam tree from the priority queue.
+	/* 우선순위 큐에서 완성된 허프만 트리 추출 */
 	HuffTreeNode *root = (HuffTreeNode*) (pq -> value);
 	free(pq);
 
 	return root;
 }
 
-// Destroy a Huffman tree.
+/* 허프만 트리 파괴 */
 void destroyHuffmanTree(HuffTreeNode **root)
 {
 	if ((*root) != NULL) {
@@ -79,7 +79,7 @@ void destroyHuffmanTree(HuffTreeNode **root)
 	*root = NULL;
 }
 
-// Compress bits with a Huffman tree and write them to a file.
+/* 허프만 트리로 비트를 압축하고 파일에 작성 */
 void writeCompressedBytes(HuffTreeNode *root, BitWriter *writer, uint8_t *rawBytes) 
 {
 	EncodedCharacter encodedCh;
@@ -89,7 +89,7 @@ void writeCompressedBytes(HuffTreeNode *root, BitWriter *writer, uint8_t *rawByt
 		writeBits(writer, encodedCh.ch[*ch], encodedCh.len[*ch]);
 }
 
-// Compare two Huffman trees.
+/* 2개의 허프만 트리 비교 */
 static int _cmpHuffmanTrees(const void *argLhs, const void *argRhs) 
 {
 	const HuffTreeNode *huffTreeNodeLhs = (HuffTreeNode*)argLhs;
@@ -109,7 +109,7 @@ static int _cmpHuffmanTrees(const void *argLhs, const void *argRhs)
 	}
 }
 
-// Make an encoding table from a Huffman tree.
+/* 허프만 트리에서 부호화 테이블 생성 */
 static void _makeEncodingTable(HuffTreeNode *root, EncodedCharacter *encodedCh, uchar ch, size_t len)
 {
 	if (root!= NULL && root -> ch != '\0') {
@@ -117,11 +117,11 @@ static void _makeEncodingTable(HuffTreeNode *root, EncodedCharacter *encodedCh, 
 		encodedCh -> len[root -> ch] = len;
 	}
 
-	// Left subtree	
+	/* 왼쪽 서브트리 */	
 	if (root -> left != NULL) 
 		_makeEncodingTable(root -> left, encodedCh, ch << 1, len + 1);
 
-	// Right subtree	
+	/* 오른쪽 서브트리 */	
 	if (root -> right != NULL) 
 		_makeEncodingTable(root -> right, encodedCh, (ch << 1) | 0x01, len + 1);
 }

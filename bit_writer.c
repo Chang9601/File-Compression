@@ -20,7 +20,7 @@ BitWriter openBitWriter(const char *path)
 	return (BitWriter) { .file = fopen(path, "wb"), .currByte = 0, .numBitsLeft = 8 };
 }
 
-// Write LSB numBitsToWrtie from bits to a writer and if the writer is full, to a file.
+/* numBitsToWrite 개수의 비트를 최하위 비트부터 writer에 작성하고 꽉차면 파일에 작성 */
 void writeBits(BitWriter *writer, uint8_t bits, uint8_t numBitsToWrite)
 {
 	assert(numBitsToWrite >= 0 && numBitsToWrite <= 8);
@@ -56,7 +56,7 @@ void writeBits(BitWriter *writer, uint8_t bits, uint8_t numBitsToWrite)
 	assert(writer -> numBitsLeft >= 1 && writer -> numBitsLeft <= 8);
 }
 
-// Write remaining bits to a file.
+/* 남은 비트를 파일에 작성 */
 void flushBitWriter(BitWriter *writer)
 {
 	fwrite(&(writer -> currByte), sizeof(writer -> currByte), 1, writer -> file);

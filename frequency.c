@@ -4,7 +4,7 @@
 #include <errno.h>
 #include "frequency.h"
 
-// Calculate frequency of characters in the open file.
+/* 열린 파일에서 문자들의 빈도 계산 */
 bool calcFrequencies(uint64_t freq[256], const char *path, const char **error)
 {
 	FILE *fp;
